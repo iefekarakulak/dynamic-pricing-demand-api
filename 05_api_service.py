@@ -5,7 +5,6 @@ from pydantic import BaseModel
 
 import database
 
-# 1. Veritabanını Başlat ve Modeli Yükle
 database.init_db()
 model = joblib.load('demand_model.joblib')
 
@@ -15,7 +14,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# 2. Pydantic Veri Şemaları
 class ProductCreate(BaseModel):
     name: str
     base_cost: float
@@ -26,7 +24,6 @@ class DemandRequest(BaseModel):
     competitor_price: float
     is_weekend: int
 
-# 3. API Endpoint'leri
 @app.get("/")
 def home():
     return {"mesaj": "Dinamik Fiyatlandırma API Aktif! Dokümantasyon için /docs adresine gidin."}
@@ -41,8 +38,7 @@ def predict_demand(data: DemandRequest):
     product = database.get_product(data.product_id)
     if not product:
         raise HTTPException(status_code=404, detail="Ürün bulunamadı")
-    
-    # Modeli çağırma
+  
     input_df = pd.DataFrame([{
         'our_price': data.target_price,
         'competitor_price': data.competitor_price,
@@ -71,8 +67,7 @@ def optimize_price(product_id: int, competitor_price: float, is_weekend: int = 0
     en_iyi_fiyat = maliyet
     maksimum_kar = -float('inf')
     en_iyi_talep = 0
-    
-    # Maliyetten başlayarak 250 TL'ye kadar 1'er TL artırarak tara
+
     for p in range(int(maliyet), 251):
         fiyat = float(p)
         input_df = pd.DataFrame([{
