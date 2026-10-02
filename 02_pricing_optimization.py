@@ -1,27 +1,22 @@
 import random
 def talep_hesapla(fiyat: float) -> int:
-    """Verilen fiyata göre tahmini satılacak adet (Talep)."""
     talep = 5000 - (4 * fiyat)
-    # Talep 0'ın altına düşemez
     return max(0, int(talep))
 
 
 def kar_hesapla(fiyat: float, maliyet: float) -> float:
-    """Verilen fiyat ve maliyete göre toplam kâr."""
     adet = talep_hesapla(fiyat)
     birim_kar = fiyat - maliyet
     toplam_kar = birim_kar * adet
     return toplam_kar
 
 
-# Ürün Parametreleri
-maliyet = 200  # TL
+maliyet = 200 
 
 en_iyi_fiyat = 0.0
 maksimum_kar = -1.0
 en_iyi_satis_adedi = 0
 
-# Fiyatı 100 TL'den (maliyet) 250 TL'ye kadar 1'er TL artırarak test edelim
 for f in range(int(maliyet), 451):
     fiyat = float(f)
     guncel_kar = kar_hesapla(fiyat, maliyet)
