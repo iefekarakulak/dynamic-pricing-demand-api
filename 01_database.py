@@ -3,7 +3,6 @@ import sqlite3
 DB_NAME = "store.db"
 
 def init_db():
-    """Veritabanı tablosunu oluşturur ve örnek 1 ürün ekler."""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     
@@ -15,7 +14,6 @@ def init_db():
         )
     """)
     
-    # Başlangıçta test için bir kulaklık ürünü ekleyelim
     cursor.execute("SELECT COUNT(*) FROM products")
     if cursor.fetchone()[0] == 0:
         cursor.execute("INSERT INTO products (name, base_cost) VALUES (?, ?)", ("Bluetooth Kulaklık", 100.0))
@@ -24,7 +22,6 @@ def init_db():
     conn.close()
 
 def get_product(product_id: int):
-    """Veritabanından ID'ye göre ürün çeker."""
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute("SELECT id, name, base_cost FROM products WHERE id = ?", (product_id,))
